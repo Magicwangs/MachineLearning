@@ -7,6 +7,8 @@ Created on Fri Aug 26 21:23:34 2016
 
 from math import log
 import operator
+import matplotlib
+import matplotlib.pyplot as plt
 
 def creatDataSet():
     dataSet = [[1, 1, 'yes'],
@@ -118,9 +120,107 @@ def createTree(dataSet,labels):
         myTree[bestFeatureLabel][value]=createTree(splitDataSet(dataSet,bestFeature,value),subLabels)
     return myTree
 
+
+
+#centerPt：中心节点位置 parentPt：父节点位置 
+#nodeTxt：中心节点的名称 nodeType：中心节点的类型 
+def plotNode(nodeTxt,centerPt,parentPt,nodeType):
+    #创建注释Create an annotation: a piece of text referring to a data point.
+    #parentPt:注释点的位置 xycoords:注释的类型
+    #详见ax.annotate
+    createPlot.ax1.annotate(nodeTxt,xy=parentPt,xycoords='axes fraction',
+                            xytext=centerPt,textcoords='axes fraction',
+                            va="center",ha="center",bbox=nodeType,arrowprops=arrow_args)
+#获取叶节点的个数
+def getNumLeafs(myTree):
+    numLeafs=0
+    firstStr=myTree.keys()[0]
+    secondDict=myTree[firstStr]
+    for key in secondDict.keys():
+        if type(secondDict[key]).__name__=='dict':
+            numLeafs+=getNumLeafs(secondDict[key])
+        else:
+            numLeafs+=1
+    return numLeafs
+
+#获取决策树的层数
+def getTreeDepth(myTree):
+    maxDepth=0
+    firstStr=myTree.keys()[0]
+    secondDict=myTree[firstStr]
+    for key in secondDict.keys():
+        if type(secondDict[key]).__name__=='dict':
+            thisDepth=1+getTreeDepth(secondDict[key])
+        else:
+            thisDepth=1
+        if thisDepth>maxDepth:maxDepth=thisDepth
+    return maxDepth
+
+#写下连线中间的0，1等特征值，cntrPt子节点位置，parentPt父节点位置  ——元组类型
+def plotMidText(cntrPt,parentPt,txtString):
+    xMid=(parentPt[0]-cntrPt[0])/2+cntrPt[0]
+    yMid=(parentPt[1]-cntrPt[1])/2+cntrPt[1]
+    createPlot.ax1.text(xMid,yMid,txtString)
+
+#
+def plotTree(myTree,parentPt,nodeTxt):
+    numLeafs=getNumLeafs(myTree)
+    depth=getTreeDepth(myTree)
+    firstStr=myTree.keys()[0]    
+    cntrPt=(plotTree.xOff+(1.0+float(numLeafs))/2.0/plotTree.totalW,plotTree.yOff)
+    plotMidText(cntrPt,parentPt,nodeTxt)
+    plotNode(firstStr,cntrPt,parentPt,decisionNode)
+    secondDict=myTree[firstStr]
+    plotTree.yOff=plotTree.yOff-1.0/plotTree.totalD
+    for key in secondDict.keys():
+        if type(secondDict[key]).__name__=='dict':
+            plotTree(secondDict[key],cntrPt,str(key))
+        else:
+            plotTree.xOff=plotTree.xOff+1.0/plotTree.totalW
+            plotNode(secondDict[key],(plotTree.xOff,plotTree.yOff),cntrPt,leafNode)
+            plotMidText((plotTree.xOff,plotTree.yOff),cntrPt,str(key))
+    plotTree.yOff=plotTree.yOff+1.0/plotTree.totalD
+
+#dict()新建字典数据
+decisionNode=dict(boxstyle="sawtooth",fc="0.8")
+leafNode=dict(boxstyle="round4",fc="0.8")
+arrow_args=dict(arrowstyle="<-")
+
+#画出树
+def createPlot(inTree):
+    #新建图1,背景色为白色
+    fig=plt.figure(1,facecolor='white')
+    #Clear the current figure
+    fig.clf()
+    axprops=dict(xticks=[],yticks=[])
+    #creatPlot.ax1是一个全局变量
+    #frameon:背景框是否在，False背景透明
+    #axprops:隐藏刻度
+    #subplot:Return a subplot axes positioned by the given grid definition.
+    createPlot.ax1=plt.subplot(111,**axprops)
+    plotTree.totalW=float(getNumLeafs(inTree))
+    plotTree.totalD=float(getTreeDepth(inTree))
+    plotTree.xOff=-0.5/plotTree.totalW
+    plotTree.yOff=1.0
+    plotTree(inTree,(0.5,1.0),'')
+#    #U''means string is a unicode string.
+#    plotNode(U'决策节点',(0.5,0.1),(0.1,0.5),decisionNode)
+#    plotNode(U'叶节点',(0.8,0.1),(0.3,0.8),leafNode)
+    plt.show()
+    
 if __name__=='__main__':
     dataSet,Labels=creatDataSet()
-    print createTree(dataSet,Labels)
-
+    print '\nthe tree is'
+    myTree=createTree(dataSet,Labels)
+    print myTree
+    
+    createPlot(myTree)
+    
+    
+    
+    
+    
+    
+    
     
     
