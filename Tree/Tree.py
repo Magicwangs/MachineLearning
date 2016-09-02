@@ -194,10 +194,10 @@ def createPlot(inTree):
     fig.clf()
     axprops=dict(xticks=[],yticks=[])
     #creatPlot.ax1是一个全局变量
-    #frameon:背景框是否在，False背景透明
+    #frameon:背景框是否在，False背景框透明
     #axprops:隐藏刻度
     #subplot:Return a subplot axes positioned by the given grid definition.
-    createPlot.ax1=plt.subplot(111,**axprops)
+    createPlot.ax1=plt.subplot(111,frameon=False,**axprops)
     plotTree.totalW=float(getNumLeafs(inTree))
     plotTree.totalD=float(getTreeDepth(inTree))
     plotTree.xOff=-0.5/plotTree.totalW
