@@ -162,7 +162,7 @@ def plotMidText(cntrPt,parentPt,txtString):
     yMid=(parentPt[1]-cntrPt[1])/2+cntrPt[1]
     createPlot.ax1.text(xMid,yMid,txtString)
 
-#
+#递归画树
 def plotTree(myTree,parentPt,nodeTxt):
     numLeafs=getNumLeafs(myTree)
     depth=getTreeDepth(myTree)
@@ -176,6 +176,7 @@ def plotTree(myTree,parentPt,nodeTxt):
         if type(secondDict[key]).__name__=='dict':
             plotTree(secondDict[key],cntrPt,str(key))
         else:
+            #每个叶节点之间的距离是总长1/个数
             plotTree.xOff=plotTree.xOff+1.0/plotTree.totalW
             plotNode(secondDict[key],(plotTree.xOff,plotTree.yOff),cntrPt,leafNode)
             plotMidText((plotTree.xOff,plotTree.yOff),cntrPt,str(key))
@@ -192,34 +193,86 @@ def createPlot(inTree):
     fig=plt.figure(1,facecolor='white')
     #Clear the current figure
     fig.clf()
+    #axprops:隐藏坐标轴刻度
     axprops=dict(xticks=[],yticks=[])
     #creatPlot.ax1是一个全局变量
     #frameon:背景框是否在，False背景框透明
-    #axprops:隐藏刻度
+    #111：1*1的坐标纸
     #subplot:Return a subplot axes positioned by the given grid definition.
     createPlot.ax1=plt.subplot(111,frameon=False,**axprops)
+    #totalW:获取叶节点个数
     plotTree.totalW=float(getNumLeafs(inTree))
+    #totalD:获取树的深度
     plotTree.totalD=float(getTreeDepth(inTree))
+    #画决策树的范围是1*1的图纸上
+    #为的是树的美观，使得第一个根节点的位置在中心
     plotTree.xOff=-0.5/plotTree.totalW
     plotTree.yOff=1.0
+    #根节点位置为(0.5,1.0)
     plotTree(inTree,(0.5,1.0),'')
 #    #U''means string is a unicode string.
 #    plotNode(U'决策节点',(0.5,0.1),(0.1,0.5),decisionNode)
 #    plotNode(U'叶节点',(0.8,0.1),(0.3,0.8),leafNode)
     plt.show()
     
+
+#利用决策树分类模块
+#inputTree:dcit类型,决策树
+#featLabels:list类型，分类特征名称
+#testVec:list类型，特征数据
+def classify_Tree(inputTree,featLabels,testVec):
+    firstStr=inputTree.keys()[0]
+    secondDict=inputTree[firstStr]
+    #list.index(obj) 从列表中找出某个值第一个匹配项的索引位置
+    featIndex=featLabels.index(firstStr)
+    for key in secondDict.keys():
+        if testVec[featIndex]==key:
+            if type(secondDict[key]).__name__=='dict':
+                classLabel=classify_Tree(secondDict[key],featLabels,testVec)
+            else:
+                classLabel=secondDict[key]
+    return classLabel
+
+#存储决策树
+def storeTree(inputTree,filename):
+    import pickle
+    #如果用写的方式打开文件，会自己生成文件
+    fw=open(filename,'w')
+    pickle.dump(inputTree,fw)
+    fw.close()
+    
+#读取决策树
+def grabTree(filename):
+    import pickle
+    fr=open(filename)
+    return pickle.load(fr)
+
+    
 if __name__=='__main__':
-    dataSet,Labels=creatDataSet()
-    print '\nthe tree is'
-    myTree=createTree(dataSet,Labels)
-    print myTree
+#    dataSet,Labels=creatDataSet()
+#    #完整赋值，treeLabels=Labels只是指向同一内存空间
+#    treeLabels=Labels[:]  
+#    print '\nthe tree is'
+#    #createTree有对Labels进行修改！！！所以不能直接对原列表操作
+#    myTree=createTree(dataSet,treeLabels)
+#    print myTree
+#    createPlot(myTree)
+#    result=classify_Tree(myTree,Labels,[1,1])
+#    print '\nThe result is %s'%result
+#    
+#    storeTree(myTree,'myTree.txt')
+#    getTree=grabTree('myTree.txt')
+#    print getTree
     
-    createPlot(myTree)
+    fr=open('lenses.txt')
+    lensesDataSet=[]
+    for line in fr.readlines():
+        newLine=line.strip().split('\t')
+        lensesDataSet.append(newLine)
     
-    
-    
-    
-    
+    lensesLabels=['age','prescript','astigmatic','tearRate']
+    lensesTree=createTree(lensesDataSet,lensesLabels)
+    createPlot(lensesTree)
     
     
     
