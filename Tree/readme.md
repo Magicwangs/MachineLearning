@@ -1,6 +1,6 @@
-Q&A:
+##Q&A:
 
-**Q1**:
+###**Q1**:
 `*args` and`**kwargs`?
 
 **A**:
@@ -12,7 +12,7 @@ Q&A:
 see[This For More](http://stackoverflow.com/questions/3394835/args-and-kwargs)
 
 
-**Q2**:
+###**Q2**:
 列表如何完整赋值？
 
 **A**:
@@ -22,7 +22,7 @@ treeLabels=Labels只是指向同一内存空间
 完整赋值应为：treeLabels=Labels[:]
 
 
-**Q3**:
+###**Q3**:
 如何存储决策树？
 
 **A**:
@@ -31,7 +31,7 @@ treeLabels=Labels只是指向同一内存空间
 详见[Python官方文档](http://python.usyiyi.cn/python_278/library/pickle.html)
 
 
-**Q4**:
+###**Q4**:
 `f.read()`,`f.readline()`,`f.readlines()`？
 
 **A**:
