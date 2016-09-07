@@ -4,6 +4,8 @@ Created on Sun Aug 28 16:12:47 2016
 
 @author: MagicWang
 """
+__author__='MagicWang'
+
 import SqlDB
 import argparse
 

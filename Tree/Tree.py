@@ -128,9 +128,11 @@ def plotNode(nodeTxt,centerPt,parentPt,nodeType):
     #创建注释Create an annotation: a piece of text referring to a data point.
     #parentPt:注释点的位置 xycoords:注释的类型
     #详见ax.annotate
-    createPlot.ax1.annotate(nodeTxt,xy=parentPt,xycoords='axes fraction',
-                            xytext=centerPt,textcoords='axes fraction',
-                            va="center",ha="center",bbox=nodeType,arrowprops=arrow_args)
+    createPlot.ax1.annotate(
+                nodeTxt,xy=parentPt,xycoords='axes fraction',
+                xytext=centerPt,textcoords='axes fraction',
+                va="center",ha="center",
+                bbox=nodeType,arrowprops=arrow_args)
 #获取叶节点的个数
 def getNumLeafs(myTree):
     numLeafs=0
@@ -269,7 +271,7 @@ if __name__=='__main__':
     for line in fr.readlines():
         newLine=line.strip().split('\t')
         lensesDataSet.append(newLine)
-    
+    fr.close()
     lensesLabels=['age','prescript','astigmatic','tearRate']
     lensesTree=createTree(lensesDataSet,lensesLabels)
     createPlot(lensesTree)

@@ -11,7 +11,6 @@
 
 see[This For More](http://stackoverflow.com/questions/3394835/args-and-kwargs)
 
-
 ###**Q2**:
 列表如何完整赋值？
 
@@ -21,7 +20,6 @@ treeLabels=Labels只是指向同一内存空间
 
 完整赋值应为：treeLabels=Labels[:]
 
-
 ###**Q3**:
 如何存储决策树？
 
@@ -29,7 +27,6 @@ treeLabels=Labels只是指向同一内存空间
 
 利用pickle模块，可以保存dict，list，array等多种类型数据
 详见[Python官方文档](http://python.usyiyi.cn/python_278/library/pickle.html)
-
 
 ###**Q4**:
 `f.read()`,`f.readline()`,`f.readlines()`？

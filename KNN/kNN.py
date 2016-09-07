@@ -4,7 +4,7 @@ Created on Sat Aug 13 20:38:54 2016
 
 @author: MagicWang
 """
-
+__author__='MagicWang'
 #  注释 ctrl+1
 
 from numpy import *
@@ -201,9 +201,9 @@ if __name__=="__main__":
 #color=['g' if x=='largeDoses' else x for x in rep]
 #
 #fig=plt.figure()
-#plt.xlabel('Game Time Percent', fontsize=15)
-#plt.ylabel('Ice Cream Liter', fontsize=15)
-#plt.title('Scatter Diagram', fontsize=20)
+#plt.xlabel(u'游戏', fontsize=15)
+#plt.ylabel(u'冰淇淋', fontsize=15)
+#plt.title(u'散点图', fontsize=20)
 #
 ##These are subplot grid parameters encoded as a single integer. 
 ##For example, "111" means "1x1 grid, first subplot" and "234" means "2x3 grid, 4th subplot".
