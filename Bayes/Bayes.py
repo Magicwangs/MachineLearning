@@ -68,7 +68,7 @@ def classifyNB(vec2Classify, p0Vec, p1Vec, pClass1):
         return 1
     else:
         return 0
-    
+
 def testingNB():
     listOPosts, listClasses = loadDataSet()
     myVocabList = createVocabList(listOPosts)
@@ -76,7 +76,7 @@ def testingNB():
     for Doc in listOPosts:
         trainMat.append(np.array(setOfWord2Vec(myVocabList, Doc)))
     p0Vect, p1Vect, pAb = trainNBO(np.array(trainMat), np.array(listClasses))
-    
+
     testWord = ['love', 'my', 'dalmation']
     thisDoc = np.array(setOfWord2Vec(myVocabList, testWord))
     print "Class is %d" % classifyNB(thisDoc, p0Vect, p1Vect, pAb)
@@ -109,7 +109,7 @@ def spamTest():
         wordList = textParse(open(spamDir + name).read())
         docList.append(wordList)
 #        fullText.extend(wordList)
-        classList.append(0)    
+        classList.append(0)
     vocabList = createVocabList(docList)
     # 交叉验证
     trainSet = range(len(docList)); testSet = []
@@ -131,7 +131,7 @@ def spamTest():
             errorCount += 1
     print "The errorCount is %d" % errorCount
 
-# 计算单词出现频率, 返回元祖类型    
+# 计算单词出现频率, 返回元祖类型
 def calcMostFreq(vocabList, fullText):
     freqDict = {}
     for token in vocabList:
@@ -164,7 +164,7 @@ def localWords(feed1, feed0):
         randIndex = random.randint(0, len(trainSet)-1)
         testSet.append(trainSet[randIndex])
         del(trainSet[randIndex])
-    # 训练  
+    # 训练
     trainMat = []; trainClass = []
     for index in trainSet:
         trainMat.append(bagOfWord2VecMN(vocabList, docList[index]))
@@ -194,7 +194,7 @@ def getTopWord(ny, sf):
     sortedNY = sorted(topNY, key=itemgetter(1), reverse=True)
     print [pair[0] for pair in sortedNY[:10]]
 
-if __name__=="__main__":    
+if __name__=="__main__":
     ny = feedparser.parse("https://newyork.craigslist.org/stp/index.rss")
     sf = feedparser.parse("https://sfbay.craigslist.org/stp/index.rss")
     getTopWord(ny, sf)
