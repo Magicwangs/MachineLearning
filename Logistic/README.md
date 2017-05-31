@@ -12,7 +12,6 @@
   找函数的最小值有不同的方法，Logistic Regression实现时有的是梯度下降（Gradient Descent）有的是梯度上升（Gradient Ascent）    
 
 
-
 ## 参考
 - [Blog](http://blog.csdn.net/dongtingzhizi/article/details/15962797)  
 - [Andrew Ng](http://open.163.com/special/opencourse/machinelearning.html)  

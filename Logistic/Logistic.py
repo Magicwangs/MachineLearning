@@ -72,7 +72,6 @@ def stocGradAscent(dataMatrix, classLabels, numIter=150):
             weights += alpha * error * dataMat[index]
             del (dataIndex[randIndex])
     return weights
-            
 
 if __name__ == "__main__":
     data, label = loadData()
